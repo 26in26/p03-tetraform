@@ -1,6 +1,6 @@
-# PXX — Project Name
+# P03 — Project Name
 
-> 26 in 26 · Weeks XX–YY · Domain (systems / ML / web / infra)
+> 26 in 26 · Weeks 05–06 · Game Development + Mobile
 
 ## Goal
 A short, clear description of **what problem this project explores** and *why it’s interesting*.
