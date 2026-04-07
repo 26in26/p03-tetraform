@@ -4,3 +4,6 @@
 
 mod hero;
 pub use hero::Hero;
+
+mod frame;
+pub use frame::Frame;
