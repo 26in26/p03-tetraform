@@ -32,7 +32,9 @@ pub fn Frame(children: Element) -> Element {
 
             // CLIFFS: Positioned absolutely so they stay on the edges
             div { class: "hidden md:block",
-                CurvedCliff { side: Side::Left, }
+                // CliffSide { side: Side::Left, depth: 5}
+                // CliffSide { side: Side::Right, depth:5 }
+                CurvedCliff { side: Side::Left }
                 CurvedCliff { side: Side::Right }
             }
         }
@@ -45,16 +47,22 @@ pub enum Side {
     Right,
 }
 
-#[component]
-pub fn CliffSide(side: Side, depth: usize) -> Element {
-    let cliff_asset = asset!("/assets/cliff.png"); // Simplified for brevity
+fn use_loaded() -> bool {
     let mut is_loaded = use_signal(|| false);
 
     use_effect(move || {
         is_loaded.set(true);
     });
 
-    let opacity = if is_loaded() {
+    is_loaded()
+}
+
+#[component]
+pub fn CliffSide(side: Side, depth: usize) -> Element {
+    let cliff_asset = asset!("/assets/cliff.png"); // Simplified for brevity
+    let is_loaded = use_loaded();
+
+    let opacity = if is_loaded {
         "opacity-100"
     } else {
         "opacity-0"
@@ -106,6 +114,14 @@ pub fn CliffSide(side: Side, depth: usize) -> Element {
 
 #[component]
 pub fn CurvedCliff(side: Side) -> Element {
+    let is_loaded = use_loaded();
+
+    let opacity = if is_loaded {
+        "opacity-100"
+    } else {
+        "opacity-0"
+    };
+
     let cliff_asset = asset!("/assets/cliff.png");
     let is_left = side == Side::Left;
 
@@ -137,7 +153,7 @@ pub fn CurvedCliff(side: Side) -> Element {
 
     rsx! {
         div {
-            class: "absolute top-0 {container_style} h-full w-[600px] pointer-events-none",
+            class: "absolute top-0 {container_style} h-full w-[600px] pointer-events-none {opacity}",
 
             for (y, flare) in cliff_data().iter() {
                 {
